@@ -1,0 +1,101 @@
+<!DOCTYPE CrossStudio_Project_File>
+<solution Name="neorv32-second-boot" target="20" version="2">
+  <configuration Name="Debug" hidden="Yes" />
+  <configuration Name="Release" hidden="Yes" />
+  <configuration Name="SDRAM2" hidden="Yes" />
+  <configuration
+    Name="SDRAM2 Debug"
+    inherited_configurations="SDRAM2;Debug" />
+  <configuration
+    Name="SDRAM2 Release"
+    inherited_configurations="SDRAM2;Release" />
+  <configuration Name="XIP to SDRAM2" hidden="Yes" />
+  <configuration
+    Name="XIP to SDRAM2 Release"
+    inherited_configurations="XIP to SDRAM2;Release" />
+  <project Name="neorv32-second-boot">
+    <configuration
+      Name="Common"
+      RISCV_TOOLCHAIN_VARIANT="Standard"
+      arm_compiler_variant="gcc"
+      arm_linker_no_warn_on_rwx_segments="Yes"
+      arm_linker_variant="GNU"
+      arm_rtl_variant="SEGGER"
+      arm_supply_absolute_file_path="No"
+      build_generic_options_file_name=""
+      build_intermediate_directory="$(Configuration)"
+      build_output_directory="$(Configuration)"
+      c_preprocessor_definitions="__ARCH_RISCV__;__NEORV32_FAMILY;INITIALIZE_STACK"
+      c_user_include_directories="..\\..\\fpga\\src\\neorv32\\sw\\lib\\include;..\\library\\adler32;..\\library\\crc16;..\\inc"
+      debug_register_definition_file="$(ProjectDir)/../../fpga/src/neorv32/sw/svd/neorv32.svd"
+      debug_target_connection="J-Link"
+      gcc_enable_all_warnings="Yes"
+      heap_size="256"
+      linker_memory_map_file="$(ProjectDir)/neorv32_MemoryMap.xml"
+      linker_printf_fmt_level="long"
+      linker_printf_width_precision_supported="Yes"
+      linker_section_placement_file="$(ProjectDir)/tcm_placement_riscv.xml"
+      linker_section_placements_segments=""
+      project_directory=""
+      project_type="Executable"
+      rv_abi="ilp32"
+      rv_architecture="rv32imc"
+      rv_debug_extensions="None"
+      rv_toolchain_prefix=""
+      stack_size="1024"
+      target_device_name="RV32"
+      target_reset_script="Reset()"
+      target_script_file="$(ProjectDir)/neorv32_Target.js" />
+    <configuration Name="Debug" c_preprocessor_definitions="__DEBUG__" />
+    <configuration
+      Name="Release"
+      c_preprocessor_definitions="__RELEASE__"
+      gcc_optimization_level="Level 2 for size"
+      link_time_optimization="Yes" />
+    <configuration
+      Name="SDRAM2"
+      linker_section_placement_file="$(ProjectDir)/placement_sdram2_riscv.xml" />
+    <configuration
+      Name="XIP to SDRAM2"
+      linker_output_format="bin"
+      linker_section_placement_file="$(ProjectDir)/placement_xip_to_sdram2_riscv.xml" />
+    <folder Name="Source Files">
+      <configuration Name="Common" filter="c;cpp;cxx;cc;h;s;asm;inc" />
+      <folder Name="library">
+        <folder Name="adler32">
+          <file file_name="../library/adler32/adler32.c" />
+        </folder>
+        <folder Name="crc16">
+          <file file_name="../library/crc16/crc16.c" />
+        </folder>
+        <folder Name="neorv32">
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_cfs.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_cpu.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_gpio.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_gptmr.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_mtime.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_neoled.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_pwm.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_rte.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_spi.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_trng.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_twi.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_uart.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_wdt.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_xip.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_xirq.c" />
+        </folder>
+      </folder>
+      <folder Name="src">
+        <file file_name="../src/flash.c" />
+        <file file_name="../src/main.c" />
+        <file file_name="../src/spi_flash.c" />
+        <file file_name="../src/system_neorv32.c" />
+        <file file_name="../src/xmodem.c" />
+      </folder>
+    </folder>
+    <folder Name="System Files">
+      <file file_name="my_riscv_crt0.s" />
+    </folder>
+  </project>
+</solution>

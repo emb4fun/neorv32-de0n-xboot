@@ -1,0 +1,40 @@
+<!DOCTYPE Linker_Placement_File>
+<Root name="XIP to SDRAM2 BOOT Section Placement">
+  <MemorySegment name="XIP_BOOT">
+    <ProgramSection alignment="4"  load="Yes" name=".init" />
+    <ProgramSection alignment="4"  load="Yes" name=".init_rodata" />
+    <ProgramSection alignment="4"  load="Yes" name=".text"    runin=".text_run" />
+    <ProgramSection alignment="4"  load="Yes" name=".dtors"   runin=".dtors_run" />
+    <ProgramSection alignment="4"  load="Yes" name=".ctors"   runin=".ctors_run" />
+    <ProgramSection alignment="4"  load="Yes" name=".rodata"  runin=".rodata_run" />
+    <ProgramSection alignment="4"  load="Yes" name=".srodata" runin=".srodata_run" />
+    <ProgramSection alignment="4"  load="Yes" name=".eh_frame" keep="Yes" />
+    <ProgramSection alignment="4"  load="Yes" name=".gcc_except_table" />
+    <ProgramSection alignment="4"  load="Yes" name=".exec.itable" />
+    <ProgramSection alignment="4"  load="Yes" name=".fast"    runin=".fast_run" />
+    <ProgramSection alignment="4"  load="Yes" name=".data"    runin=".data_run" />
+    <ProgramSection alignment="4"  load="Yes" name=".tdata"   runin=".tdata_run" />
+    <ProgramSection alignment="4"  load="Yes" name=".sdata"   runin=".sdata_run" inputsections="*(.sdata.* .sdata2.*)" />
+  </MemorySegment>
+  <MemorySegment name="IMEM">
+  </MemorySegment>
+  <MemorySegment name="DMEM">
+  </MemorySegment>
+  <MemorySegment name="SDRAM2">
+    <ProgramSection alignment="4"  load="No"  name=".text_run" />
+    <ProgramSection alignment="4"  load="No"  name=".dtors_run" />
+    <ProgramSection alignment="4"  load="No"  name=".ctors_run" />
+    <ProgramSection alignment="4"  load="No"  name=".rodata_run" />
+    <ProgramSection alignment="4"  load="No"  name=".srodata_run" />
+    <ProgramSection alignment="4"  load="No"  name=".fast_run" />
+    <ProgramSection alignment="4"  load="No"  name=".data_run" />
+    <ProgramSection alignment="4"  load="No"  name=".tdata_run" />
+    <ProgramSection alignment="4"  load="No"  name=".sdata_run" />
+    <ProgramSection alignment="4"  load="No"  name=".bss" />
+    <ProgramSection alignment="4"  load="No"  name=".tbss" />
+    <ProgramSection alignment="4"  load="No"  name=".sbss" />
+    <ProgramSection alignment="4"  load="No"  name=".non_init" />
+    <ProgramSection alignment="4"  load="No"  name=".stack" size="__STACKSIZE__" />
+    <ProgramSection alignment="16" load="No"  name=".heap"  size="__HEAPSIZE__" />
+  </MemorySegment>
+</Root>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="US-ASCII" standalone="yes"?>
+<cof>
+	<eprom_name>EPCS64</eprom_name>
+	<flash_loader_device>EP4CE22</flash_loader_device>
+	<output_filename>./build/image.jic</output_filename>
+	<n_pages>0</n_pages>
+	<width>1</width>
+	<mode>7</mode>
+	<hex_block>
+		<hex_filename>./build/hwimage.hex</hex_filename>
+		<hex_addressing>absolute</hex_addressing>
+	</hex_block>
+	<version>5</version>
+	<create_cvp_file>0</create_cvp_file>
+	<options>
+		<map_file>1</map_file>
+	</options>
+	<advanced_options>
+		<ignore_epcs_id_check>0</ignore_epcs_id_check>
+		<ignore_condone_check>2</ignore_condone_check>
+		<plc_adjustment>0</plc_adjustment>
+		<post_chain_bitstream_pad_bytes>-1</post_chain_bitstream_pad_bytes>
+		<post_device_bitstream_pad_bytes>-1</post_device_bitstream_pad_bytes>
+		<bitslice_pre_padding>1</bitslice_pre_padding>
+	</advanced_options>
+</cof>

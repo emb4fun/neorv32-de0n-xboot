@@ -1,0 +1,44 @@
+<<<
+:sectnums:
+==== General Purpose Input and Output Port (GPIO)
+
+[cols="<3,<3,<4"]
+[frame="topbot",grid="none"]
+|=======================
+| Hardware source file(s): | neorv32_gpio.vhd | 
+| Software driver file(s): | neorv32_gpio.c |
+|                          | neorv32_gpio.h |
+| Top entity port:         | `gpio_o` | 64-bit parallel output port
+|                          | `gpio_i` | 64-bit parallel input port
+| Configuration generics:  | `IO_GPIO_NUM` | number of input/output pairs to implement (0..64)
+| CPU interrupts:          | none |
+|=======================
+
+The general purpose parallel IO unit provides a simple parallel input and output port. These ports can be used
+chip-externally (for example to drive status LEDs, connect buttons, etc.) or chip-internally to provide control
+signals for other IP modules.
+
+The actual number of input/output pairs is defined by the `IO_GPIO_NUM` generic. When set to zero, the GPIO module
+is excluded from synthesis and the output port `gpio_o` is tied to all-zero. If `IO_GPIO_NUM` is less than the
+maximum value of 64, only the LSB-aligned bits in `gpio_o` and `gpio_i` are actually connected while the remaining
+bits are tied to zero or are left unconnected, respectively.
+
+.Access Atomicity
+[NOTE]
+The GPIO modules uses two memory-mapped registers (each 32-bit) each for accessing the input and
+output signals. Since the CPU can only process 32-bit "at once" updating the entire output cannot
+be performed within a single clock cycle.
+
+
+**Register Map**
+
+.GPIO unit register map (`struct NEORV32_GPIO`)
+[cols="<2,<2,^1,^1,<6"]
+[options="header",grid="rows"]
+|=======================
+| Address      | Name [C]    | Bit(s) | R/W | Function
+| `0xffffffc0` | `INPUT_LO`  | 31:0   | r/- | parallel input port pins 31:0
+| `0xffffffc4` | `INPUT_HI`  | 31:0   | r/- | parallel input port pins 63:32
+| `0xffffffc8` | `OUTPUT_LO` | 31:0   | r/w | parallel output port pins 31:0
+| `0xffffffcc` | `OUTPUT_HI` | 31:0   | r/w | parallel output port pins 63:32
+|=======================

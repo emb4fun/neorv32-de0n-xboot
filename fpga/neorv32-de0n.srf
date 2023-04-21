@@ -1,0 +1,9 @@
+{ "" "" "" "PLL \"pll_sys:inst_pll_sys\|altpll:altpll_component\|pll_sys_altpll:auto_generated\|pll1\" output port clk\[1\] feeds output pin \"SDRAM_CLK~output\" via non-dedicated routing -- jitter performance depends on switching rate of other design elements. Use PLL dedicated clock outputs to ensure jitter performance" {  } {  } 0 15064 "" 0 0 "Quartus II" 0 -1 0 ""}
+{ "" "" "" "VHDL Process Statement warning at neorv32_trng.vhd(656): inferring latch(es) for signal or variable \"inv_chain_s\", which holds its previous value in one or more paths through the process" {  } {  } 0 10631 "" 0 0 "Quartus II" 0 -1 0 ""}
+{ "" "" "" "VHDL Process Statement warning at neorv32_trng.vhd(672): inferring latch(es) for signal or variable \"inv_chain_l\", which holds its previous value in one or more paths through the process" {  } {  } 0 10631 "" 0 0 "Quartus II" 0 -1 0 ""}
+{ "" "" "" "*" {  } {  } 0 20028 "" 0 0 "Quartus II" 0 -1 0 ""}
+{ "" "" "" "*" {  } {  } 0 292013 "" 0 0 "Quartus II" 0 -1 0 ""}
+{ "" "" "" "*" {  } {  } 0 169177 "" 0 0 "Quartus II" 0 -1 0 ""}
+{ "" "" "" "*" {  } {  } 0 332060 "" 0 0 "Quartus II" 0 -1 0 ""}
+{ "" "" "" "*" {  } {  } 0 10445 "" 0 0 "Quartus II" 0 -1 0 ""}
+{ "" "" "" "*" {  } {  } 0 10296 "" 0 0 "Quartus II" 0 -1 0 ""}

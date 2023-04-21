@@ -1,0 +1,390 @@
+:sectnums:
+== Overview
+
+The NEORV32 RISC-V Processor is an open-source RISC-V compatible processor system that is intended as
+*ready-to-go* auxiliary processor within a larger SoC designs or as stand-alone custom / customizable
+microcontroller.
+
+The system is highly configurable and provides optional common peripherals like embedded memories,
+timers, serial interfaces, general purpose IO ports and an external bus interface to connect custom IP like
+memories, NoCs and other peripherals. On-line and in-system debugging is supported by an OpenOCD/gdb
+compatible on-chip debugger accessible via JTAG.
+
+Special focus is paid on **execution safety** to provide defined and predictable behavior at any time.
+Therefore, the CPU ensures that all memory access are acknowledged and no invalid/malformed instructions
+are executed. Whenever an unexpected situation occurs, the application code is informed via hardware exceptions.
+
+The software framework of the processor comes with application makefiles, software libraries for all CPU
+and processor features, a bootloader, a runtime environment and several example programs - including a port
+of the CoreMark MCU benchmark and the official RISC-V architecture test suite. RISC-V GCC is used as
+default toolchain (https://github.com/stnolting/riscv-gcc-prebuilt[prebuilt toolchains are also provided]).
+
+Check out the processor's **https://stnolting.github.io/neorv32/ug[online User Guide]**
+that provides hands-on tutorials to get you started.
+
+
+**Structure**
+
+[start=2]
+. <<_neorv32_processor_soc>>
+. <<_neorv32_central_processing_unit_cpu>>
+. <<_software_framework>>
+. <<_on_chip_debugger_ocd>>
+. <<_legal>>
+
+
+**Annotations**
+
+[WARNING]
+Warning
+
+[IMPORTANT]
+Important
+
+[NOTE]
+Note
+
+[TIP]
+Tip
+
+
+<<<
+// ####################################################################################################################
+
+include::rationale.adoc[]
+
+
+
+// ####################################################################################################################
+:sectnums:
+=== Project Key Features
+
+**Project**
+
+* all-in-one package: **CPU** + **SoC** + **Software Framework & Tooling**
+* completely described in behavioral, platform-independent VHDL - no vendor- or technology-specific primitives, attributes, macros, libraries, etc. are used at all
+* all-Verilog "version" available (auto-generated netlist)
+* extensive configuration options for adapting the processor to the requirements of the application
+* highly extensible hardware - on CPU, SoC and system level
+* aims to be as small as possible while being as RISC-V-compliant as possible - with a reasonable area-vs-performance trade-off
+* FPGA friendly (e.g. all internal memories can be mapped to block RAM - including the register file)
+* optimized for high clock frequencies to ease timing closure and integration
+* from zero to _"hello world!"_ - completely open source and documented
+* easy to use even for FPGA/RISC-V starters – intended to _work out of the box_
+
+**NEORV32 CPU (the core)**
+
+* 32-bit RISC-V CPU
+* fully compatible to the RISC-V ISA specs. - checked by the https://github.com/stnolting/neorv32-riscof[official RISCOF architecture tests]
+* base ISA + privileged ISA + several optional standard and custom ISA extensions
+* option to add user-defined RISC-V instructions as custom ISA extension
+* rich set of customization options (ISA extensions, design goal: performance / area / energy, tuning options, ...)
+* <<_full_virtualization>> capabilities to increase execution safety
+* official RISC-V open source architecture ID
+
+**NEORV32 Processor (the SoC)**
+
+* highly-configurable full-scale microcontroller-like processor system
+* based on the NEORV32 CPU
+* optional standard serial interfaces (UART, TWI, SPI (host and device), 1-Wire)
+* optional timers and counters (watchdog, system timer)
+* optional general purpose IO and PWM; a native NeoPixel(c)-compatible smart LED interface
+* optional embedded memories and caches for data, instructions and bootloader
+* optional external memory interface for custom connectivity
+* optional execute in-place (XIP) module to execute code directly form an external SPI flash
+* on-chip debugger compatible with OpenOCD and gdb including hardware trigger module
+
+**Software framework**
+
+* GCC-based toolchain - https://github.com/stnolting/riscv-gcc-prebuilt[prebuilt toolchains available]; application compilation based on GNU makefiles
+* internal bootloader with serial user interface (via UART)
+* core libraries and HAL for high-level usage of the provided functions and peripherals
+* processor-specific runtime environment and several example programs
+* doxygen-based documentation of the software framework; a deployed version is available at https://stnolting.github.io/neorv32/sw/files.html
+* FreeRTOS port + demos available
+
+
+**Extensibility and Customization**
+
+The NEORV32 processor is designed to ease customization and extensibility and provides several options for adding
+application-specific custom hardware modules and accelerators. The three most common options for adding custom
+on-chip modules are listed below.
+
+* <<_processor_external_memory_interface_wishbone>> to attach processor-external IP modules
+* <<_custom_functions_subsystem_cfs>> for tightly-coupled processor-internal co-processors
+* <<_custom_functions_unit_cfu>> for custom RISC-V instructions
+
+[TIP]
+A more detailed comparison of the extension/customization options can be found in section
+https://stnolting.github.io/neorv32/ug/#_adding_custom_hardware_modules[Adding Custom Hardware Modules]
+of the user guide.
+
+
+<<<
+// ####################################################################################################################
+:sectnums:
+=== Project Folder Structure
+
+...................................
+neorv32                - Project home folder
+│
+├docs                  - Project documentation
+│├datasheet            - AsciiDoc sources for the NEORV32 data sheet
+│├figures              - Figures and logos
+│├icons                - Misc. symbols
+│├references           - Data sheets and RISC-V specs.
+│└userguide            - AsciiDoc sources for the NEORV32 user guide
+│
+├rtl                   - VHDL sources
+│├core                 - Core sources of the CPU & SoC
+││└mem                 - SoC-internal memories (default architectures)
+│├processor_templates  - Pre-configured SoC wrappers
+│├system_integration   - System wrappers for advanced connectivity
+│└test_setups          - Minimal test setup "SoCs" used in the User Guide
+│
+├sim                   - Simulation files (see User Guide)
+│
+└sw                    - Software framework
+ ├bootloader           - Sources of the processor-internal bootloader
+ ├common               - Linker script, crt0.S start-up code and central makefile
+ ├example              - Example programs for the core and the SoC modules
+ │└...
+ ├lib                  - Processor core library
+ │├include             - Header files (*.h)
+ │└source              - Source files (*.c)
+ ├image_gen            - Helper program to generate NEORV32 executables
+ ├ocd_firmware         - Firmware for the on-chip debugger's "park loop"
+ ├openocd              - OpenOCD configuration files
+ └svd                  - Processor system view description file (CMSIS-SVD)
+...................................
+
+
+
+<<<
+// ####################################################################################################################
+:sectnums:
+=== VHDL File Hierarchy
+
+All necessary VHDL hardware description files are located in the project's `rtl/core` folder. The top entity
+of the entire processor including all the required configuration generics is `neorv32_top.vhd`.
+
+.NEORV32 VHDL Library
+[IMPORTANT]
+All core VHDL files from the list below have to be assigned to a new design library named `neorv32`.
+
+...................................
+neorv32_top.vhd                  - NEORV32 Processor top entity
+│
+├neorv32_fifo.vhd                - General purpose FIFO component
+├neorv32_package.vhd             - Processor/CPU main VHDL package file
+│
+├neorv32_cpu.vhd                 - NEORV32 CPU top entity
+│├neorv32_cpu_alu.vhd            - Arithmetic/logic unit
+││├neorv32_cpu_cp_bitmanip.vhd   - Bit-manipulation co-processor (B ext.)
+││├neorv32_cpu_cp_cfu.vhd        - Custom instructions co-processor (Zxcfu ext.)
+││├neorv32_cpu_cp_cond.vhd       - Conditional operations co-processor (Zicond ext.)
+││├neorv32_cpu_cp_fpu.vhd        - Floating-point co-processor (Zfinx ext.)
+││├neorv32_cpu_cp_muldiv.vhd     - Mul/Div co-processor (M ext.)
+││└neorv32_cpu_cp_shifter.vhd    - Bit-shift co-processor (base ISA)
+│├neorv32_cpu_bus.vhd            - Load/store unit + physical memory protection
+│├neorv32_cpu_control.vhd        - CPU control, exception system and CSRs
+││└neorv32_cpu_decompressor.vhd  - Compressed instructions decoder
+│└neorv32_cpu_regfile.vhd        - Data register file
+│
+├neorv32_boot_rom.vhd            - Bootloader ROM
+│└neorv32_bootloader_image.vhd   - Bootloader ROM memory image
+├neorv32_busswitch.vhd           - Processor bus switch for CPU buses (I&D)
+├neorv32_bus_keeper.vhd          - Processor-internal bus monitor
+├neorv32_cfs.vhd                 - Custom functions subsystem
+├neorv32_dcache.vhd              - Processor-internal data cache
+├neorv32_debug_dm.vhd            - on-chip debugger: debug module
+├neorv32_debug_dtm.vhd           - on-chip debugger: debug transfer module
+├neorv32_dmem.entity.vhd         - Processor-internal data memory (entity-only!)
+├neorv32_gpio.vhd                - General purpose input/output port unit
+├neorv32_gptmr.vhd               - General purpose 32-bit timer
+├neorv32_icache.vhd              - Processor-internal instruction cache
+├neorv32_imem.entity.vhd         - Processor-internal instruction memory (entity-only!)
+│└neor32_application_image.vhd   - IMEM application initialization image
+├neorv32_mtime.vhd               - Machine system timer
+├neorv32_neoled.vhd              - NeoPixel (TM) compatible smart LED interface
+├neorv32_onewire.vhd             - One-Wire serial interface controller
+├neorv32_pwm.vhd                 - Pulse-width modulation controller
+├neorv32_sdi.vhd                 - Serial data interface controller (SPI device)
+├neorv32_spi.vhd                 - Serial peripheral interface controller (SPI host)
+├neorv32_sysinfo.vhd             - System configuration information memory
+├neorv32_trng.vhd                - True random number generator
+├neorv32_twi.vhd                 - Two wire serial interface controller
+├neorv32_uart.vhd                - Universal async. receiver/transmitter
+├neorv32_wdt.vhd                 - Watchdog timer
+├neorv32_wishbone.vhd            - External (Wishbone) bus interface
+├neorv32_xip.vhd                 - Execute in place module
+├neorv32_xirq.vhd                - External interrupt controller
+│
+├mem/neorv32_dmem.default.vhd    - _Default_ data memory (architecture-only)
+└mem/neorv32_imem.default.vhd    - _Default_ instruction memory (architecture-only)
+...................................
+
+[NOTE]
+The processor-internal instruction and data memories (IMEM and DMEM) are split into two design files each:
+a plain entity definition (`neorv32_*mem.entity.vhd`) and the actual architecture definition
+(`mem/neorv32_*mem.default.vhd`). The `*.default.vhd` architecture definitions from `rtl/core/mem` provide a _generic_ and
+_platform independent_ memory design (inferring embedded memory blocks). You can replace/modify the architecture
+source file in order to use platform-specific features (like advanced memory resources) or to improve technology mapping
+and/or timing.
+
+
+<<<
+// ####################################################################################################################
+:sectnums:
+=== FPGA Implementation Results
+
+[NOTE]
+This section shows **exemplary** FPGA implementation results for the NEORV32 CPU and NEORV32 Processor modules.
+
+[discrete]
+==== CPU
+
+[cols="<2,<8"]
+[grid="topbot"]
+|=======================
+| HW version:  | `1.7.8.5`
+| Top entity:  | `rtl/core/neorv32_cpu.vhd`
+| FPGA:        | Intel Cyclone IV E `EP4CE22F17C6`
+| Toolchain:   | Quartus Prime Lite 21.1
+| Constraints: | **no timing constraints**, "_balanced optimization_", f~max~ from "_Slow 1200mV 0C Model_"
+|=======================
+
+[cols="<6,>1,>1,>1,>1,>1"]
+[options="header",grid="rows"]
+|=======================
+| CPU ISA Configuration                             | LEs  | FFs  | MEM bits | DSPs | _f~max~_
+| `rv32i_Zicsr`                                     | 1223 |  607 |     1024 |    0 | 130 MHz
+| `rv32i_Zicsr_Zicntr`                              | 1578 |  773 |     1024 |    0 | 130 MHz
+| `rv32im_Zicsr_Zicntr`                             | 2087 |  983 |     1024 |    0 | 130 MHz
+| `rv32imc_Zicsr_Zicntr`                            | 2338 |  992 |     1024 |    0 | 130 MHz
+| `rv32imcb_Zicsr_Zicntr`                           | 3175 | 1247 |     1024 |    0 | 130 MHz
+| `rv32imcbu_Zicsr_Zicntr`                          | 3186 | 1254 |     1024 |    0 | 130 MHz
+| `rv32imcbu_Zicsr_Zicntr_Zifencei`                 | 3187 | 1254 |     1024 |    0 | 130 MHz
+| `rv32imcbu_Zicsr_Zicntr_Zifencei_Zfinx`           | 4450 | 1906 |     1024 |    7 | 123 MHz
+| `rv32imcbu_Zicsr_Zicntr_Zifencei_Zfinx_DebugMode` | 4825 | 2018 |     1024 |    7 | 123 MHz
+|=======================
+
+.Goal-Driven Optimization
+[TIP]
+The CPU provides further options to reduce the area footprint or to increase performance.
+See section <<_processor_top_entity_generics>> for more information. Also, take a look at the User Guide section
+https://stnolting.github.io/neorv32/ug/#_application_specific_processor_configuration[Application-Specific Processor Configuration].
+
+
+[discrete]
+==== Processor - Modules
+
+[cols="<2,<8"]
+[grid="topbot"]
+|=======================
+| HW version:  | `1.6.8.3++`
+| Top entity:  | `rtl/core/neorv32_top.vhd`
+| FPGA:        | Intel Cyclone IV E `EP4CE22F17C6`
+| Toolchain:   | Quartus Prime Lite 21.1
+| Constraints: | **no timing constraints**, "_balanced optimization_"
+|=======================
+
+.Hardware utilization by processor module (mandatory modules highlighted in **bold**)
+[cols="<2,<8,>1,>1,>2,>1"]
+[options="header",grid="rows"]
+|=======================
+| Module        | Description                                                    | LEs | FFs | MEM bits | DSPs
+| Boot ROM      | Bootloader ROM (4kB)                                           |   3 |   2 |    32768 |    0
+| **BUSKEEPER** | Processor-internal bus monitor                                 |  28 |  15 |        0 |    0
+| **BUSSWITCH** | Bus multiplexer for CPU instr. and data interface              |  69 |   8 |        0 |    0
+| CFS           | Custom functions subsystem footnote:[Resource utilization depends on custom design logic.] | - | - | - | -
+| DM            | On-chip debugger - debug module                                | 391 | 220 |        0 |    0
+| DTM           | On-chip debugger - debug transfer module (JTAG)                | 259 | 221 |        0 |    0
+| DMEM          | Processor-internal data memory (8kB)                           |  18 |   2 |    65536 |    0
+| GPIO          | General purpose input/output ports                             | 102 |  98 |        0 |    0
+| GPTMR         | General Purpose Timer                                          | 153 | 105 |        0 |    0
+| iCACHE        | Instruction cache (2x4 blocks, 64 bytes per block)             | 417 | 297 |     4096 |    0
+| dCACHE        | Data cache (8 blocks, 64 bytes per block)                      | 417 | 297 |     4096 |    0
+| IMEM          | Processor-internal instruction memory (16kB)                   |  12 |   2 |   131072 |    0
+| MTIME         | Machine system timer                                           | 345 | 166 |        0 |    0
+| NEOLED        | Smart LED Interface (NeoPixel/WS28128) (FIFO_depth=1)          | 227 | 184 |        0 |    0
+| ONEWIRE       | 1-wire interface                                               | 107 |  77 |        0 |    0
+| PWM           | Pulse_width modulation controller (8 channels)                 | 128 | 117 |        0 |    0
+| SPI           | Serial peripheral interface                                    | 114 |  94 |        0 |    0
+| SDI           | Serial data interface                                          |  72 |  66 |        0 |    0
+| **SYSINFO**   | System configuration information memory                        |  13 |  11 |        0 |    0
+| TRNG          | True random number generator                                   |  89 |  79 |        0 |    0
+| TWI           | Two-wire interface                                             |  77 |  43 |        0 |    0
+| UART0, UART1  | Universal asynchronous receiver/transmitter 0/1 (FIFO_depth=1) | 195 | 143 |        0 |    0
+| WDT           | Watchdog timer                                                 |  61 |  46 |        0 |    0
+| WISHBONE      | External memory interface                                      | 120 | 112 |        0 |    0
+| XIP           | Execute in place module                                        | 318 | 244 |        0 |    0
+| XIRQ          | External interrupt controller (32 channels)                    | 245 | 200 |        0 |    0
+|=======================
+
+
+[discrete]
+==== Processor - Exemplary Setup
+
+[cols="<2,<8"]
+[grid="topbot"]
+|=======================
+| HW version:  | `1.7.7.3`
+| CPU:         | `rv32imcu_Zicsr_Zicnt_DEBUG` + `FST_MUL` + `FAST_SHIFT`
+| Peripherals: | `UART0` + `MTIME` + `GPIO`
+| FPGA:        | Xilinx Artix-7 `xc7a35ticsg324-1L`
+| Toolchain:   | Xilinx Vivado 2019.2
+| Constraints: | clock constrained to 150 MHz, default/standard synthesis & implementation settings
+|=======================
+
+[cols="^1,^1,^1,^1,^1"]
+[options="header",grid="rows"]
+|=======================
+| LUTs  | FFs  | BRAMs | DSPs | Clock
+| 2488  | 1807 |     7 |    4 | 150 MHz
+|=======================
+
+.Exemplary Processor Setups
+[TIP]
+Check out the `neorv32-setups` repository (on GitHub: https://github.com/stnolting/neorv32-setups),
+which provides several demo setups and community projects for various FPGA boards and toolchains.
+
+
+<<<
+// ####################################################################################################################
+:sectnums:
+=== CPU Performance
+
+The performance of the NEORV32 was tested and evaluated using the https://www.eembc.org/coremark/[Core Mark CPU benchmark].
+The according sources can be found in the `sw/example/coremark` folder.
+The resulting CoreMark score is defined as CoreMark iterations per second per MHz.
+
+.Dhrystone Benchmark
+[TIP]
+A very simple port of the Dhrystone benchmark is also available in `sw/example/dhrystone`.
+
+.Configuration
+[cols="<2,<8"]
+[grid="topbot"]
+|=======================
+| HW version:     | `1.5.7.10`
+| Hardware:       | 32kB int. IMEM, 16kB int. DMEM, no caches, 100MHz clock
+| CoreMark:       | 2000 iterations, MEM_METHOD is MEM_STACK
+| Compiler:       | RISCV32-GCC 10.2.0 (compiled with `march=rv32i mabi=ilp32`)
+| Compiler flags: | default (with `-O3`), see makefile
+|=======================
+
+.CoreMark results
+[cols="<4,^1,^1,^1"]
+[options="header",grid="rows"]
+|=======================
+| CPU                                             | CoreMark Score | CoreMarks/MHz | Average CPI
+| _small_ (`rv32i_Zicsr`)                         |          33.89 | **0.3389**    | **4.04**
+| _medium_ (`rv32imc_Zicsr`)                      |          62.50 | **0.6250**    | **5.34**
+| _performance_ (`rv32imc_Zicsr` + perf. options) |          95.23 | **0.9523**    | **3.54**
+|=======================
+
+The NEORV32 CPU is based on a multi-cycle architecture. Each instruction is executed in a sequence of
+several consecutive micro operations. The average CPI (cycles per instruction) depends on the instruction
+mix of a specific applications and also on the available CPU extensions. More information regarding the execution
+time of each implemented instruction can be found in section <<_instruction_sets_and_extensions>>.

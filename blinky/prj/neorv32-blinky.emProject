@@ -1,0 +1,159 @@
+<!DOCTYPE CrossStudio_Project_File>
+<solution Name="neorv32-blinky" target="20" version="2">
+  <configuration Name="Debug" hidden="Yes" />
+  <configuration Name="Release" hidden="Yes" />
+  <configuration Name="SDRAM" hidden="Yes" />
+  <configuration Name="SDRAM Debug" inherited_configurations="SDRAM;Debug" />
+  <configuration
+    Name="SDRAM Release"
+    inherited_configurations="SDRAM;Release" />
+  <configuration Name="TCM" hidden="Yes" />
+  <configuration Name="TCM Debug" inherited_configurations="TCM;Debug" />
+  <configuration Name="TCM Release" inherited_configurations="TCM;Release" />
+  <configuration Name="XIP" hidden="Yes" />
+  <configuration Name="XIP Release" inherited_configurations="XIP;Release" />
+  <configuration Name="XIP to SDRAM" hidden="Yes" />
+  <configuration
+    Name="XIP to SDRAM Release"
+    inherited_configurations="XIP to SDRAM;Release" />
+  <project Name="neorv32-blinky">
+    <configuration
+      Name="Common"
+      RISCV_TOOLCHAIN_VARIANT="Standard"
+      arm_compiler_variant="gcc"
+      arm_linker_no_warn_on_rwx_segments="Yes"
+      arm_linker_variant="GNU"
+      arm_rtl_variant="SEGGER"
+      arm_supply_absolute_file_path="No"
+      build_generic_options_file_name=""
+      build_intermediate_directory="$(Configuration)"
+      build_output_directory="$(Configuration)"
+      c_preprocessor_definitions="__ARCH_RISCV__;__NEORV32_FAMILY;INITIALIZE_STACK;RTOS_TCTS;USE_BOARD_DE0N;ITERATIONS=2000"
+      c_user_include_directories="..\\..\\fpga\\src\\neorv32\\sw\\lib\\include;..\\library\\tcts\\inc;..\\library\\tal_de0n\\board\\de0n\\inc;..\\library\\tal_de0n\\core\\inc;..\\library\\tal_de0n\\cpu\\riscv\\neorv32\\inc;..\\dhrystone\\inc;..\\coremark;..\\coremark_port;..\\inc"
+      debug_register_definition_file="$(ProjectDir)/../../hw/src/neorv32/sw/svd/neorv32.svd"
+      debug_target_connection="J-Link"
+      heap_size="256"
+      linker_memory_map_file="$(ProjectDir)/neorv32_MemoryMap.xml"
+      linker_printf_fmt_level="long"
+      linker_printf_fp_enabled="Float"
+      linker_printf_width_precision_supported="Yes"
+      linker_section_placement_file="$(ProjectDir)/tcm_placement_riscv.xml"
+      linker_section_placements_segments=""
+      project_directory=""
+      project_type="Executable"
+      rv_abi="ilp32"
+      rv_architecture="rv32imc"
+      rv_debug_extensions="None"
+      rv_toolchain_prefix=""
+      stack_size="2048"
+      target_device_name="RV32"
+      target_reset_script="Reset()"
+      target_script_file="$(ProjectDir)/neorv32_Target.js" />
+    <configuration Name="Debug" c_preprocessor_definitions="__DEBUG__" />
+    <configuration
+      Name="Release"
+      c_preprocessor_definitions="__RELEASE__"
+      gcc_optimization_level="Level 2 for speed"
+      link_time_optimization="Yes"
+      linker_output_format="bin" />
+    <configuration
+      Name="SDRAM"
+      c_preprocessor_definitions="__SDRAM__"
+      linker_section_placement_file="$(ProjectDir)/placement_sdram_riscv.xml" />
+    <configuration
+      Name="SDRAM Release"
+      post_build_command="$(ProjectDir)/_create_xbo_fw.bat $(ProjectName) &quot;SDRAM Release&quot; 0x90000000" />
+    <configuration
+      Name="TCM"
+      c_preprocessor_definitions="__TCM__"
+      linker_section_placement_file="$(ProjectDir)/placement_tcm_riscv.xml" />
+    <configuration
+      Name="TCM Release"
+      post_build_command="$(ProjectDir)/_create_xbo_fw.bat $(ProjectName) &quot;TCM Release&quot; 0x00000000" />
+    <configuration
+      Name="XIP"
+      c_preprocessor_definitions="__XIP__"
+      linker_section_placement_file="$(ProjectDir)/placement_xip_riscv.xml" />
+    <configuration
+      Name="XIP Release"
+      post_build_command="$(ProjectDir)/_create_xbo_fw.bat $(ProjectName) &quot;XIP Release&quot; 0x40100000"
+      post_build_command_control="Always Run" />
+    <configuration
+      Name="XIP to SDRAM"
+      c_preprocessor_definitions="__XIP_TO_SDRAM__"
+      linker_section_placement_file="$(ProjectDir)/placement_xip_to_sdram_riscv.xml"
+      post_build_command="$(ProjectDir)/_create_xbo_fw.bat $(ProjectName) $(Configuration)" />
+    <configuration
+      Name="XIP to SDRAM Release"
+      post_build_command="$(ProjectDir)/_create_xbo_fw.bat $(ProjectName) &quot;XIP to SDRAM Release&quot; 0x40100000"
+      post_build_command_control="Always Run" />
+    <folder Name="Source Files">
+      <configuration Name="Common" filter="c;cpp;cxx;cc;h;s;asm;inc" />
+      <folder Name="coremark">
+        <file file_name="../coremark/core_list_join.c" />
+        <file file_name="../coremark/core_main.c" />
+        <file file_name="../coremark/core_matrix.c" />
+        <file file_name="../coremark/core_state.c" />
+        <file file_name="../coremark/core_util.c" />
+      </folder>
+      <folder Name="coremark_port">
+        <file file_name="../coremark_port/core_portme.c" />
+        <file file_name="../coremark_port/cvt.c" />
+        <file file_name="../coremark_port/ee_printf.c" />
+      </folder>
+      <folder Name="dhrystone">
+        <file file_name="../dhrystone/src/dhry_1.c" />
+        <file file_name="../dhrystone/src/dhry_2.c" />
+        <file file_name="../dhrystone/src/dhry_port.c" />
+      </folder>
+      <folder Name="library">
+        <folder Name="neorv32">
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_cfs.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_cpu.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_gpio.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_gptmr.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_mtime.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_neoled.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_pwm.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_rte.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_spi.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_trng.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_twi.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_uart.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_wdt.c" />
+          <file file_name="../../fpga/src/neorv32/sw/lib/source/neorv32_xirq.c" />
+        </folder>
+        <folder Name="tal">
+          <folder Name="board">
+            <file file_name="../library/tal_de0n/board/de0n/src/talboard.c" />
+            <file file_name="../library/tal_de0n/board/de0n/src/talgpio.c" />
+            <file file_name="../library/tal_de0n/board/de0n/src/talled.c" />
+          </folder>
+          <folder Name="core">
+            <file file_name="../library/tal_de0n/core/src/tal.c" />
+            <file file_name="../library/tal_de0n/core/src/talcom.c" />
+            <file file_name="../library/tal_de0n/core/src/taldebug.c" />
+            <file file_name="../library/tal_de0n/core/src/talmem.c" />
+            <file file_name="../library/tal_de0n/core/src/talmisc.c" />
+          </folder>
+          <folder Name="cpu">
+            <file file_name="../library/tal_de0n/cpu/riscv/neorv32/src/talcpu.c" />
+            <file file_name="../library/tal_de0n/cpu/riscv/neorv32/src/talcpu_com.c" />
+          </folder>
+        </folder>
+        <folder Name="tcts">
+          <file file_name="../library/tcts/src/tcts.c" />
+        </folder>
+      </folder>
+      <folder Name="src">
+        <file file_name="../src/main.c" />
+        <file file_name="../src/memtest.c" />
+        <file file_name="../src/terminal.c" />
+        <file file_name="../src/xmempool.c" />
+      </folder>
+    </folder>
+    <folder Name="System Files">
+      <file file_name="my_riscv_crt0.s" />
+    </folder>
+  </project>
+</solution>
