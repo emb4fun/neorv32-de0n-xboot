@@ -27,6 +27,7 @@
   <ProjectSessionItem path="neorv32-first-boot"/>
   <ProjectSessionItem path="neorv32-first-boot;neorv32-first-boot"/>
   <ProjectSessionItem path="neorv32-first-boot;neorv32-first-boot;Source Files"/>
+  <ProjectSessionItem path="neorv32-first-boot;neorv32-first-boot;Source Files;src"/>
  </Project>
  <Register1>
   <RegisterWindow visibleNodes="ABI, RV32I/pc;ABI, RV32I/ra;ABI, RV32I/sp;ABI, RV32I/gp;ABI, RV32I/tp;ABI, RV32I/a0;ABI, RV32I/a1;ABI, RV32I/a2;ABI, RV32I/a3;ABI, RV32I/a4;ABI, RV32I/a5;ABI, RV32I/a6;ABI, RV32I/a7;ABI, RV32I/t0;ABI, RV32I/t1;ABI, RV32I/t2;ABI, RV32I/t3;ABI, RV32I/t4;ABI, RV32I/t5;ABI, RV32I/t6;ABI, RV32I/s0;ABI, RV32I/s1;ABI, RV32I/s2;ABI, RV32I/s3;ABI, RV32I/s4;ABI, RV32I/s5;ABI, RV32I/s6;ABI, RV32I/s7;ABI, RV32I/s8;ABI, RV32I/s9;ABI, RV32I/s10;ABI, RV32I/s11;CPU, RV32I/pc;CPU, RV32I/x1;CPU, RV32I/x2;CPU, RV32I/x3;CPU, RV32I/x4;CPU, RV32I/x5;CPU, RV32I/x6;CPU, RV32I/x7;CPU, RV32I/x8;CPU, RV32I/x9;CPU, RV32I/x10;CPU, RV32I/x11;CPU, RV32I/x12;CPU, RV32I/x13;CPU, RV32I/x14;CPU, RV32I/x15;CPU, RV32I/x16;CPU, RV32I/x17;CPU, RV32I/x18;CPU, RV32I/x19;CPU, RV32I/x20;CPU, RV32I/x21;CPU, RV32I/x22;CPU, RV32I/x23;CPU, RV32I/x24;CPU, RV32I/x25;CPU, RV32I/x26;CPU, RV32I/x27;CPU, RV32I/x28;CPU, RV32I/x29;CPU, RV32I/x30;CPU, RV32I/x31" binaryNodes="" asciiNodes="" openNodes="CPU, RV32I" name="neorv32-first-boot_TCM Release" decimalNodes="" octalNodes="" unsignedNodes=""/>
@@ -63,7 +64,7 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="192" useTextEdit="1" path="../src/main.c" left="0" selected="1" top="179" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="194" useTextEdit="1" path="../src/main.c" left="0" selected="1" top="179" codecName="Default"/>
  </Files>
  <EMStudioWindow activeProject="neorv32-first-boot" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="ROM Release" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>

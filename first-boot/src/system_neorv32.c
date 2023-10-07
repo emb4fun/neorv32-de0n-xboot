@@ -256,9 +256,6 @@ void SystemBootInit (void)
    /* Clear all pending IRQs */
    neorv32_cpu_csr_write(CSR_MIP, 0);
 
-   /* Clear BUSKEEPER error flags */
-   NEORV32_BUSKEEPER->CTRL = 0;
-
    /*******************************************************************/
 
    /* Enable and configure primary UART (UART0). */
@@ -269,10 +266,10 @@ void SystemBootInit (void)
    {
       neorv32_xip_setup(CLK_PRSC_2, 0, 0, SPI_FLASH_CMD_READ);
       neorv32_xip_burst_mode_enable();
-      neorv32_xip_start(XIP_FLASH_ABYTES, FLASH_START_ADDR);
+      neorv32_xip_start(XIP_FLASH_ABYTES);
    }
 
-   /* Cleat all LEDs */
+   /* Clear all LEDs */
    if (neorv32_gpio_available())
    {
       neorv32_gpio_port_set(0);

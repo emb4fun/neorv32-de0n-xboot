@@ -38,7 +38,6 @@
 #include <stdio.h>
 #include "tal.h"
 #include "terminal.h"
-#include "dhrystone.h"
 #include "memtest.h"
 #include "xmempool.h"
 
@@ -360,7 +359,7 @@ static void StartTask (void *p)
 
 
    /*
-    * Dhrystone and CoreMark test only runs in the SDRAM configuration
+    * The CoreMark test only runs in the SDRAM configuration
     * because there is not enough memory available in the TCM configuration.
     */
 #if defined(__SDRAM__)
@@ -369,11 +368,6 @@ static void StartTask (void *p)
    term_printf("CoreMark Benchmark started ...\r\n\r\n");
    OS_TimeDly(500);
    main_core();   /* Start CoreMark */
-#endif
-
-#if 0
-   OS_TimeDly(500);
-   main_dhry();   /* Start Dhrystone */
 #endif
 
 #endif

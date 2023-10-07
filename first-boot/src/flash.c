@@ -136,7 +136,7 @@ void FlashStartImage (uint32_t dAddress)
       // This can be sued by the XIP burst mode, which accelerates data fetch by up to 50%.
       neorv32_xip_burst_mode_enable(); // this has to be called right before starting the XIP mode by neorv32_xip_start()
 
-      neorv32_xip_start(XIP_FLASH_ABYTES, FLASH_START_ADDR);
+      neorv32_xip_start(XIP_FLASH_ABYTES);
    }
 
    AppEntry(); /* Start application */

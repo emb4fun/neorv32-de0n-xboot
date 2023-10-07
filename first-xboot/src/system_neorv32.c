@@ -245,9 +245,6 @@ void SystemBootInit (void)
    /* Clear all pending IRQs */
    neorv32_cpu_csr_write(CSR_MIP, 0);
 
-   /* Clear BUSKEEPER error flags */
-   NEORV32_BUSKEEPER->CTRL = 0;
-
    /*******************************************************************/
 
    /* Enable and configure primary UART (UART0). */

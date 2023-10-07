@@ -189,8 +189,6 @@ static void OutputsystemInfo (void)
 {
   PRINT_TEXT("HWV:  ");
   PRINT_XNUM(neorv32_cpu_csr_read(CSR_MIMPID));
-  PRINT_TEXT("\nCID:  ");
-  PRINT_XNUM(NEORV32_SYSINFO->CUSTOM_ID);
   PRINT_TEXT("\nCLK:  ");
   PRINT_XNUM(NEORV32_SYSINFO->CLK);
   PRINT_TEXT("\nMISA: ");
@@ -199,13 +197,17 @@ static void OutputsystemInfo (void)
   PRINT_XNUM(neorv32_cpu_csr_read(CSR_MXISA));
   PRINT_TEXT("\nSOC:  ");
   PRINT_XNUM(NEORV32_SYSINFO->SOC);
+
   PRINT_TEXT("\nIMEM: ");
-  PRINT_XNUM(NEORV32_SYSINFO->IMEM_SIZE); PRINT_TEXT(" bytes @");
-  PRINT_XNUM(NEORV32_SYSINFO->ISPACE_BASE);
+  PRINT_XNUM((uint32_t)(1 << NEORV32_SYSINFO->MEM[SYSINFO_MEM_IMEM]) & 0xFFFFFFFCUL);
+  PRINT_TEXT(" bytes @ ");
+  PRINT_XNUM(0x00000000);
+  
   PRINT_TEXT("\nDMEM: ");
-  PRINT_XNUM(NEORV32_SYSINFO->DMEM_SIZE);
+  PRINT_XNUM((uint32_t)(1 << NEORV32_SYSINFO->MEM[SYSINFO_MEM_DMEM]) & 0xFFFFFFFCUL);
   PRINT_TEXT(" bytes @");
-  PRINT_XNUM(NEORV32_SYSINFO->DSPACE_BASE);
+  PRINT_XNUM(0x80000000);
+
   PRINT_TEXT("\n\n");
 
 } /* OutputsystemInfo */
@@ -709,7 +711,7 @@ void term_RxCallback (uint8_t bData)
       {
          if (neorv32_wdt_available() != 0)
          {
-            neorv32_wdt_setup((NEORV32_SYSINFO->CLK / 4096), 0, 0, 1);
+            neorv32_wdt_setup((NEORV32_SYSINFO->CLK / 4096), 0, 0, 1, 1);
          }
          break;
       }

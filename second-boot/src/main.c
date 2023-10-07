@@ -759,7 +759,7 @@ void term_RxCallback (uint8_t bData)
       {
          if (neorv32_wdt_available() != 0)
          {
-            neorv32_wdt_setup((NEORV32_SYSINFO->CLK / 4096), 0, 0, 1);
+            neorv32_wdt_setup((NEORV32_SYSINFO->CLK / 4096), 0, 0, 1, 1);
          }
          break;
       }

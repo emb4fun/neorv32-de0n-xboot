@@ -242,7 +242,7 @@ void tal_CPUInitHWDog (void)
       bInitDone = 1;
 
       dTimeoutSec = 1 * (NEORV32_SYSINFO->CLK / 4096);
-      neorv32_wdt_setup(dTimeoutSec, 0, 0, 1);
+      neorv32_wdt_setup(dTimeoutSec, 0, 0, 1, 1);
    }
 
 } /* tal_CPUInitHWDog */

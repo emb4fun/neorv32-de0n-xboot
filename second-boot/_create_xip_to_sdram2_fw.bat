@@ -19,7 +19,7 @@ del .\build\*.* /Q >NUL 2>&1
 :: Copy output file and create new image file
 ::
 copy "prj\XIP to SDRAM2 Release\%ORG_NAME%.bin" .\build >NUL 2>&1
-.\tools\bin2xboot -i .\build\%ORG_NAME%.bin -o .\build\%PRJ_NAME%.xbo -s 0x407E0000
+.\tools\bin2xboot -i .\build\%ORG_NAME%.bin -o .\build\%PRJ_NAME%.xbo -s 0xE07E0000
 
 echo.
 pause

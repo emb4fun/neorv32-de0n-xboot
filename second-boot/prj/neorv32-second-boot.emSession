@@ -76,7 +76,6 @@
  </Watch4>
  <Files>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="544" useTextEdit="1" path="../src/main.c" left="0" selected="1" top="525" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="238" useTextEdit="1" path="../src/flash.c" left="0" top="221" codecName="Default"/>
  </Files>
  <EMStudioWindow activeProject="neorv32-second-boot" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="XIP to SDRAM2 Release" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>

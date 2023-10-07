@@ -43,11 +43,11 @@
 **************************************************************************/
 
 #define FLASH_TOTAL_SIZE      (8*1024*1024)
-#define FLASH_START_ADDR      0x40000000
+#define FLASH_START_ADDR      0xE0000000
 #define FLASH_END_ADDR        (FLASH_START_ADDR + FLASH_TOTAL_SIZE)
 
-#define FLASH_USER_START_ADDR 0x40100000
-#define FLASH_BOOT_START_ADDR 0x407E0000
+#define FLASH_USER_START_ADDR 0xE0100000
+#define FLASH_BOOT_START_ADDR 0xE07E0000
 
 /**************************************************************************
 *  Macro Definitions

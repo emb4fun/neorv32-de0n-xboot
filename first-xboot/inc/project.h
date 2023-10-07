@@ -55,7 +55,7 @@
 #define PROJECT_NAME          "XModem Bootloader"
 #define PROJECT_BOARD         "DE0-Nano"
 
-#define PROJECT_VER_MAJOR     1
+#define PROJECT_VER_MAJOR     2
 #define PROJECT_VER_MINOR_1   0
 #define PROJECT_VER_MINOR_2   0
 

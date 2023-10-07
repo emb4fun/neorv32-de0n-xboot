@@ -29,7 +29,7 @@
       build_intermediate_directory="$(Configuration)"
       build_output_directory="$(Configuration)"
       c_preprocessor_definitions="__ARCH_RISCV__;__NEORV32_FAMILY;INITIALIZE_STACK;RTOS_TCTS;USE_BOARD_DE0N;ITERATIONS=2000"
-      c_user_include_directories="..\\..\\fpga\\src\\neorv32\\sw\\lib\\include;..\\library\\tcts\\inc;..\\library\\tal_de0n\\board\\de0n\\inc;..\\library\\tal_de0n\\core\\inc;..\\library\\tal_de0n\\cpu\\riscv\\neorv32\\inc;..\\dhrystone\\inc;..\\coremark;..\\coremark_port;..\\inc"
+      c_user_include_directories="..\\..\\fpga\\src\\neorv32\\sw\\lib\\include;..\\library\\tcts\\inc;..\\library\\tal_de0n\\board\\de0n\\inc;..\\library\\tal_de0n\\core\\inc;..\\library\\tal_de0n\\cpu\\riscv\\neorv32\\inc;..\\coremark;..\\coremark_port;..\\inc"
       debug_register_definition_file="$(ProjectDir)/../../hw/src/neorv32/sw/svd/neorv32.svd"
       debug_target_connection="J-Link"
       heap_size="256"
@@ -76,7 +76,7 @@
       linker_section_placement_file="$(ProjectDir)/placement_xip_riscv.xml" />
     <configuration
       Name="XIP Release"
-      post_build_command="$(ProjectDir)/_create_xbo_fw.bat $(ProjectName) &quot;XIP Release&quot; 0x40100000"
+      post_build_command="$(ProjectDir)/_create_xbo_fw.bat $(ProjectName) &quot;XIP Release&quot; 0xE0100000"
       post_build_command_control="Always Run" />
     <configuration
       Name="XIP to SDRAM"
@@ -85,7 +85,7 @@
       post_build_command="$(ProjectDir)/_create_xbo_fw.bat $(ProjectName) $(Configuration)" />
     <configuration
       Name="XIP to SDRAM Release"
-      post_build_command="$(ProjectDir)/_create_xbo_fw.bat $(ProjectName) &quot;XIP to SDRAM Release&quot; 0x40100000"
+      post_build_command="$(ProjectDir)/_create_xbo_fw.bat $(ProjectName) &quot;XIP to SDRAM Release&quot; 0xE0100000"
       post_build_command_control="Always Run" />
     <folder Name="Source Files">
       <configuration Name="Common" filter="c;cpp;cxx;cc;h;s;asm;inc" />
@@ -100,11 +100,6 @@
         <file file_name="../coremark_port/core_portme.c" />
         <file file_name="../coremark_port/cvt.c" />
         <file file_name="../coremark_port/ee_printf.c" />
-      </folder>
-      <folder Name="dhrystone">
-        <file file_name="../dhrystone/src/dhry_1.c" />
-        <file file_name="../dhrystone/src/dhry_2.c" />
-        <file file_name="../dhrystone/src/dhry_port.c" />
       </folder>
       <folder Name="library">
         <folder Name="neorv32">
