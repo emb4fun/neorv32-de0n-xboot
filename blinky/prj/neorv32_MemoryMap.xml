@@ -5,6 +5,6 @@
   <MemorySegment name="SDRAM"    start="0x90000040" size="0x01FDFFC0" access="Read/Write" />
   <MemorySegment name="SDRAM2"   start="0x91FE0000" size="0x00020000" access="Read/Write" />
   <MemorySegment name="XIP"      start="0xE0100040" size="0x006DFFC0" access="Read/Write" />
-  <MemorySegment name="XIP_BOOT" start="0xE407E0040" size="0x0001FFC0" access="Read/Write" />
+  <MemorySegment name="XIP_BOOT" start="0xE07E0040" size="0x0001FFC0" access="Read/Write" />
   <MemorySegment name="ROM"      start="0xFFFFC000" size="0x00002000" access="Read/Write" />
 </root>
